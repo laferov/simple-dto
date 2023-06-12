@@ -2,30 +2,31 @@ class Program {
     static Product[] products = new Product[1];
     public static void main(String[] args) {
 
-        String[] beverages = {"juice","tea","coca-cola","water","cofee"};
+        String[] beverages = {"water","juice","tea","cofee","coca-cola","beer"};
 
-        for (int i = 0; i < 10; i++) {
+        // Заполнение массива products случайными напитками
+        for (int i = 0; i < 20; i++) {
             int random_drink = (int) (Math.random() * beverages.length); 
             ProductsImpl.addProduct(new Product(i,beverages[random_drink]));
         }
 
-        ProductsImpl.deleteProduct(5);
+
+        // Удаление напитка beer из массива
+        Integer[] beverages_to_delete =  ProductsImpl.FindByName("beer");
+
+        for (int i = 0; i < beverages_to_delete.length; i++) {
+            ProductsImpl.deleteProduct(beverages_to_delete[i]);
+        }
+
+        // Вывод массива products
 
         for (int i = 0; i < products.length; i++) {
             System.out.printf("[%d] %s \n",products[i].id, products[i].name);
         }
-
-        Integer[] FindByName =  ProductsImpl.FindByName("tea");
-        for (int i = 0; i < FindByName.length; i++) {
-            System.out.printf("%d ",FindByName[i]);
-        }
-        System.out.println();
-
-        System.out.println("Program Done");
-    
+        
     
     }
-
+// класс product, id - уникальный идентификатор, name - название 
 public static class Product {
     Integer id;
     String name;
@@ -40,6 +41,7 @@ public static class Product {
 
 
 public static class ProductsImpl {
+    // добавление продукта в массив products
     public static boolean addProduct(Product product) {
         if (product.id == 0) return false;
 
@@ -65,7 +67,7 @@ public static class ProductsImpl {
         return true;
         // return false;
     }
-
+    // удаление продукта по id
     public static boolean deleteProduct(Integer id) {
         int idToRemove = 0;
         for (int i = 0; i < products.length; i++) {
@@ -90,13 +92,14 @@ public static class ProductsImpl {
 
     }
 
+    // Получение названия продукта по id
     public static String getName(Integer id) {
         for (int i = 0; i < products.length; i++) {
             if (products[i].id == id) return products[i].name;
             }
             return "Product not found";
         }
-
+    // поиск id продуктов по названию
     public static Integer[] FindByName(String name) {
 
         int count = 0;
